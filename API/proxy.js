@@ -5,7 +5,7 @@ module.exports = async function handler(req, res) {
 
   if (req.method === "OPTIONS") { res.status(200).end(); return; }
 
-  const replicateKey = req.headers["x-replicate-key"];
+  const replicateKey = req.headers["x-replicate-key"] || process.env.REPLICATE_API_KEY;
   if (!replicateKey || !replicateKey.startsWith("r8_")) {
     return res.status(401).json({ error: "Invalid API key" });
   }
