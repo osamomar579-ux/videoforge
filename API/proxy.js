@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-replicate-key, x-replicate-path");
@@ -7,11 +7,11 @@ export default async function handler(req, res) {
 
   const replicateKey = req.headers["x-replicate-key"];
   if (!replicateKey || !replicateKey.startsWith("r8_")) {
-    return res.status(401).json({ error: "Missing or invalid Replicate API key" });
+    return res.status(401).json({ error: "Invalid API key" });
   }
 
   const replicatePath = req.headers["x-replicate-path"] || "";
-  if (!replicatePath) return res.status(400).json({ error: "Missing x-replicate-path header" });
+  if (!replicatePath) return res.status(400).json({ error: "Missing path" });
 
   const url = `https://api.replicate.com/v1/${replicatePath}`;
 
@@ -32,4 +32,4 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-}
+};
